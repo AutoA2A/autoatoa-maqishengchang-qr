@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>批量生成 - 码上生成</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+--bg-light:#f8fafc;
+--fg-light:#1e293b;
+--primary-light:#2563eb;
+--bg-dark:#1e293b;
+--fg-dark:#f8fafc;
+--primary-dark:#60a5fa;
+--radius-card:8px;
+--radius-btn:6px;
+--spacing:16px;
+--margin:24px;
+font-family:Inter, system-ui, sans-serif;
+}
+body{
+margin:0;
+background:var(--bg-light);
+color:var(--fg-light);
+transition:background .3s, color .3s;
+}
+@media (prefers-color-scheme: dark){
+body{
+background:var(--bg-dark);
+color:var(--fg-dark);
+}
+}
+header{
+background:var(--primary-light);
+color:#fff;
+padding:var(--spacing);
+}
+@media (prefers-color-scheme: dark){
+header{
+background:var(--primary-dark);
+}
+}
+nav{
+display:flex;
+flex-wrap:wrap;
+gap:var(--spacing);
+}
+nav a{
+color:#fff;
+text-decoration:none;
+font-weight:600;
+padding:var(--spacing) 0;
+}
+nav a:hover{
+opacity:0.8;
+}
+main{
+padding:var(--margin);
+max-width:960px;
+margin:0 auto;
+}
+.card{
+background:var(--bg-light);
+color:var(--fg-light);
+border-radius:var(--radius-card);
+padding:var(--spacing);
+margin-bottom:var(--margin);
+box-shadow:0 2px 4px rgba(0,0,0,.05);
+}
+@media (prefers-color-scheme: dark){
+.card{
+background:var(--bg-dark);
+color:var(--fg-dark);
+}
+}
+button{
+background:var(--primary-light);
+color:#fff;
+border:none;
+border-radius:var(--radius-btn);
+padding:var(--spacing);
+font-weight:600;
+cursor:pointer;
+}
+button:hover{
+opacity:0.9;
+}
+@media (prefers-color-scheme: dark){
+button{
+background:var(--primary-dark);
+}
+}
+</style>
+<meta name="description" content="批量页支持粘贴多行文本或上传CSV，新增自定义命名规则（如前缀_序号_后缀），统一样式设置，使用JSZip从CDN懒加载打包下载ZIP，加入主题切换和颜色选择器修复。"><meta name="keywords" content="QR码生成, 在线工具, 批量生成, 历史记录, 主题切换"><meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:type" content="website"><meta property="og:title" content="批量生成 - 码上生成"><meta property="og:description" content="批量页支持粘贴多行文本或上传CSV，新增自定义命名规则（如前缀_序号_后缀），统一样式设置，使用JSZip从CDN懒加载打包下载ZIP，加入主题切换和颜色选择器修复。"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="批量生成 - 码上生成"><meta name="twitter:description" content="批量页支持粘贴多行文本或上传CSV，新增自定义命名规则（如前缀_序号_后缀），统一样式设置，使用JSZip从CDN懒加载打包下载ZIP，加入主题切换和颜色选择器修复。"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"批量生成 - 码上生成","description":"批量页支持粘贴多行文本或上传CSV，新增自定义命名规则（如前缀_序号_后缀），统一样式设置，使用JSZip从CDN懒加载打包下载ZIP，加入主题切换和颜色选择器修复。","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"}}</script><style data-a2a="basecss">*,*::before,*::after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0}img,canvas,svg,video,table{max-width:100%;height:auto}pre,code{white-space:pre-wrap;word-break:break-word}[data-a2a="header"]{width:100%}@media(max-width:640px){body{font-size:15px}}</style></head>
+<body>
+<header>
+<nav>
+<a href="index.html">首页</a>
+<a href="batch.html">批量生成</a>
+<a href="history.html">历史记录</a>
+<a href="guide.html">使用指南</a>
+<a href="settings.html">设置</a>
+<a href="style.html">样式定制</a>
+<a href="share.html">分享码</a>
+<a href="api.html">API文档</a>
+</nav>
+</header>
+<main>
+
+<sectionclass="card">
+  <h2>批量生成 QR 码</h2>
+  <p>粘贴多行文本或上传 CSV（仅一列文本），设置命名规则后即可一次生成并打包下载。</p>
+</section>
+
+<section class="card">
+  <h3>输入方式</h3>
+  <div style="display:flex;flex-direction:column;gap:var(--spacing);margin-bottom:var(--margin);">
+    <textarea id="txtInput" rows="6" placeholder="每行一条文本，例如&#10;https://example.com&#10;Hello World" style="width:100%;padding:var(--spacing);border:1px solid #cbd5e1;border-radius:var(--radius-card);font-family:inherit;"></textarea>
+    <label style="font-size:.9rem;color:#64748b;">或上传 CSV 文件（仅第一列）</label>
+    <input type="file" id="fileInput" accept=".csv,text/csv" style="border:none;">
+  </div>
+</section>
+
+<section class="card">
+  <h3>命名规则</h3>
+  <p>使用占位符 <code>{prefix}</code>、<code>{index}</code>、<code>{suffix}</code>，<code>{index}</code> 从 1 开始递增。</p>
+  <div style="display:flex;gap:var(--spacing);align-items:center;">
+    <input type="text" id="prefix" placeholder="前缀" style="flex:1;padding:var(--spacing);border:1px solid #cbd5e1;border-radius:var(--radius-card);">
+    <input type="text" id="suffix" placeholder="后缀" style="flex:1;padding:var(--spacing);border:1px solid #cbd5e1;border-radius:var(--radius-card);">
+  </div>
+</section>
+
+<section class="card">
+  <h3>样式设置</h3>
+  <div style="display:flex;gap:var(--spacing);align-items:center;">
+    <label>尺寸：</label>
+    <input type="number" id="size" value="256" min="64" max="1024" style="width:80px;padding:var(--spacing);border:1px solid #cbd5e1;border-radius:var(--radius-card);">
+    <label>前景色：</label>
+    <input type="color" id="fgColor" value="#000000" style="width:40px;height:40px;padding:0;border:none;">
+    <label>背景色：</label>
+    <input type="color" id="bgColor" value="#ffffff" style="width:40px;height:40px;padding:0;border:none;">
+  </div>
+</section>
+
+<section class="card" style="display:flex;flex-direction:column;gap:var(--spacing);align-items:flex-start;">
+  <div style="display:flex;gap:var(--spacing);align-items:center;flex-wrap:wrap;">
+    <button id="genBtn" class="btn">生成并下载 ZIP</button>
+    <button id="themeToggle" class="btn">切换深色/浅色</button>
+  </div>
+  <div id="progress" style="font-size:.9rem;color:#64748b;min-height:1.5em;"></div>
+</section>
+
+<script src="jszip.min.js"></script>
+<script src="qrcode.min.js"></script>
+<script>
+  // 主题切换
+  const themeToggle = document.getElementById('themeToggle');
+  const rootEl = document.documentElement;
+  const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  if (savedTheme === 'dark') rootEl.classList.add('dark');
+  themeToggle.addEventListener('click', () => {
+    const isDark = rootEl.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    themeToggle.textContent = isDark ? '切换浅色' : '切换深色';
+  });
+
+  // 生成逻辑
+  document.getElementById('genBtn').addEventListener('click', async () => {
+    const progress = document.getElementById('progress');
+    progress.textContent = '准备中…';
+    const raw = document.getElementById('txtInput').value.trim();
+    const fileInput = document.getElementById('fileInput');
+    let lines = [];
+    if (raw) {
+      lines = raw.split(/\r?\n/).map(l => l.trim()).filter(l => l);
+    } else if (fileInput.files[0]) {
+      const text = await fileInput.files[0].text();
+      lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l);
+      // 仅取第一列（CSV）
+      lines = lines.map(l => l.split(',')[0].trim()).filter(l => l);
+    }
+    if (lines.length === 0) {
+      progress.textContent = '请输入内容或上传 CSV';
+      return;
+    }
+    const prefix = document.getElementById('prefix').value.trim() || '';
+    const suffix = document.getElementById('suffix').value.trim() || '';
+    const size = parseInt(document.getElementById('size').value, 10);
+    const fg = document.getElementById('fgColor').value;
+    const bg = document.getElementById('bgColor').value;
+
+    const zip = new JSZip();
+    const imgFolder = zip.folder('qrcodes');
+    let count = 0;
+    for (const text of lines) {
+      count++;
+      const filename = `${prefix}${count}${suffix}.png`;
+      try {
+        const dataUrl = await QRCode.toDataURL(text, {
+          width: size,
+          margin: 1,
+          color: { dark: fg, light: bg }
+        });
+        // 转为 blob
+        const resp = await fetch(dataUrl);
+        const blob = await resp.blob();
+        imgFolder.file(filename, blob);
+      } catch (e) {
+        console.error(e);
+        progress.textContent = `生成第 ${count} 条时出错`;
+        return;
+      }
+    }
+    progress.textContent = '正在打包…';
+    const zipBlob = await imgFolder.generateAsync({type:'blob'});
+    const url = URL.createObjectURL(zipBlob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'qrcodes.zip';
+    a.click();
+    URL.revokeObjectURL(url);
+    progress.textContent = `完成！共生成 ${count} 个 QR 码`;
+  });
+</script>
+
+</main>
+<footer data-a2a="footer" style="margin-top:48px;padding:28px 16px;border-top:1px solid rgba(127,127,127,.16);text-align:center;font-family:system-ui,-apple-system,'PingFang SC',sans-serif;line-height:1.9;color:#8a8f99;background:transparent"><a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:10px"><img src="https://agent.oagi.com.cn/uploads/202606/29ea3ed5413830b3.png" alt="AutoA2A" style="height:36px;vertical-align:middle;border:0"></a><div style="font-size:13.5px;color:#6b7280;max-width:760px;margin:0 auto 6px">✅️ <b>AutoA2A</b> · 智能体互连 Agent to Agent 平台——让智能体无缝发现、协商、协作与安全交换数据，开启 AI 即服务新时代。</div><div style="font-size:13px">本网站由 <a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="color:#f2603c;text-decoration:none;font-weight:600">www.autoa2a.org</a> 多个 AI 协作生成</div><div style="font-size:12px;color:#aab;margin-top:6px">Copyright © 2025 - 2026 AutoA2A. All Rights Reserved. A2A版权所有</div></footer></body>
+</html>
