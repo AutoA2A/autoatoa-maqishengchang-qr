@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>使用指南 - 码上生成</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+--bg-light:#f8fafc;
+--fg-light:#1e293b;
+--primary-light:#2563eb;
+--bg-dark:#1e293b;
+--fg-dark:#f8fafc;
+--primary-dark:#60a5fa;
+--radius-card:8px;
+--radius-btn:6px;
+--spacing:16px;
+--margin:24px;
+font-family:Inter, system-ui, sans-serif;
+}
+body{
+margin:0;
+background:var(--bg-light);
+color:var(--fg-light);
+transition:background .3s, color .3s;
+}
+@media (prefers-color-scheme: dark){
+body{
+background:var(--bg-dark);
+color:var(--fg-dark);
+}
+}
+header{
+background:var(--primary-light);
+color:#fff;
+padding:var(--spacing);
+}
+@media (prefers-color-scheme: dark){
+header{
+background:var(--primary-dark);
+}
+}
+nav{
+display:flex;
+flex-wrap:wrap;
+gap:var(--spacing);
+}
+nav a{
+color:#fff;
+text-decoration:none;
+font-weight:600;
+padding:var(--spacing) 0;
+}
+nav a:hover{
+opacity:0.8;
+}
+main{
+padding:var(--margin);
+max-width:960px;
+margin:0 auto;
+}
+.card{
+background:var(--bg-light);
+color:var(--fg-light);
+border-radius:var(--radius-card);
+padding:var(--spacing);
+margin-bottom:var(--margin);
+box-shadow:0 2px 4px rgba(0,0,0,.05);
+}
+@media (prefers-color-scheme: dark){
+.card{
+background:var(--bg-dark);
+color:var(--fg-dark);
+}
+}
+button{
+background:var(--primary-light);
+color:#fff;
+border:none;
+border-radius:var(--radius-btn);
+padding:var(--spacing);
+font-weight:600;
+cursor:pointer;
+}
+button:hover{
+opacity:0.9;
+}
+@media (prefers-color-scheme: dark){
+button{
+background:var(--primary-dark);
+}
+}
+</style>
+<meta name="description" content="使用教程和QR码知识科普页面，加入主题适配，代码示例使用可折叠块，增加常见问题FAQ的手风琴式展示，所有图片及示例均通过CDN懒加载。"><meta name="keywords" content="QR码生成, 在线工具, 批量生成, 历史记录, 主题切换"><meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:type" content="website"><meta property="og:title" content="使用指南 - 码上生成"><meta property="og:description" content="使用教程和QR码知识科普页面，加入主题适配，代码示例使用可折叠块，增加常见问题FAQ的手风琴式展示，所有图片及示例均通过CDN懒加载。"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="使用指南 - 码上生成"><meta name="twitter:description" content="使用教程和QR码知识科普页面，加入主题适配，代码示例使用可折叠块，增加常见问题FAQ的手风琴式展示，所有图片及示例均通过CDN懒加载。"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"使用指南 - 码上生成","description":"使用教程和QR码知识科普页面，加入主题适配，代码示例使用可折叠块，增加常见问题FAQ的手风琴式展示，所有图片及示例均通过CDN懒加载。","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"}}</script><style data-a2a="basecss">*,*::before,*::after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0}img,canvas,svg,video,table{max-width:100%;height:auto}pre,code{white-space:pre-wrap;word-break:break-word}[data-a2a="header"]{width:100%}@media(max-width:640px){body{font-size:15px}}</style></head>
+<body>
+<header>
+<nav>
+<a href="index.html">首页</a>
+<a href="batch.html">批量生成</a>
+<a href="history.html">历史记录</a>
+<a href="guide.html">使用指南</a>
+<a href="settings.html">设置</a>
+<a href="style.html">样式定制</a>
+<a href="share.html">分享码</a>
+<a href="api.html">API文档</a>
+</nav>
+</header>
+<main>
+
+<section class="card">
+  <h2>使用指南</h2>
+  <p>以下是码上生成的完整使用教程，帮助您快速上手并了解 QR 码的基本知识。</p>
+</section>
+
+<section class="card">
+  <h3>快速开始</h3>
+  <ol>
+    <li>打开 <a href="index.html">首页</a>，输入您想编码的文本或网址。</li>
+    <li>调整尺寸、颜色、容错率等参数（可选）。</li>
+    <li>点击「生成」按钮，即可看到实时预览的 QR 码。</li>
+    <li>使用「下载 PNG」或「下载 SVG」保存二维码。</li>
+  </ol>
+</section>
+
+<section class="card">
+  <h3>QR 码基础知识</h3>
+  <ul>
+    <li><strong>什么是 QR 码？</strong>二维条码，能够存储更多信息且具备容错能力。</li>
+    <li><strong>容错率（Error Correction Level）</strong>：L（7%）、M（15%）、Q（25%）、H（30%）。等级越高，可恢复的损坏越多，但码图越密。</li>
+    <li><strong>版本（Version）</strong>：从 1（21×21 模块）到 40（177×177 模块），版本越大容量越高。</li>
+    <li><strong>数据类型</strong>：数字、字母数字、字节、汉字（GBK/UTF-8）等。</li>
+  </ul>
+  <figure style="text-align:center;margin:var(--spacing) 0;">
+    <img loading="lazy" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' fill='%23fff'/%3E%3Cpath d='M30 30h18v18H30zm36 0h18v18H66zm0 36h18v18H66zm36-36h18v18h-18zm0 36h18v18h-18zM30 102h18v18H30zm36 0h18v18H66zm0-36h18v18H66zm36 0h18v18h-18z' fill='%23000'/%3E%3C/svg%3E" alt="QR 码结构示意" style="width:120px;height:120px;">
+    <figcaption>示意图：黑色模块构成数据与定位图案</figcaption>
+  </figure>
+</section>
+
+<section class="card">
+  <h3>代码示例（可折叠）</h3>
+
+  <details>
+    <summary>使用原生 JS 生成 QR 码（基于 VanillaQRCode）</summary>
+    <pre><code>// 将此脚本放入页面底部或模块中
+function generateQR(text, options = {}) {
+  const { size = 256, color = '#000', bg = '#fff', eccLevel = 'M' } = options;
+  const qr = new VanillaQRCode(text, {
+    width: size,
+    height: size,
+    colorDark: color,
+    colorLight: bg,
+    correctLevel: VanillaQRCode.CorrectLevel[eccLevel]
+  });
+  const svg = qr.getSVG();
+  document.body.insertAdjacentHTML('beforeend', svg);
+}
+
+// 示例：生成一个链接
+generateQR('https://example.com', { size: 200, color: '#2563eb', bg: '#f8fafc', eccLevel: 'H' });
+</code></pre>
+    <button class="btn" onclick="navigator.clipboard.writeText(document.querySelector('details:nth-of-type(1) pre code').textContent)">复制代码</button>
+  </details>
+
+  <details>
+    <summary>使用 Canvas 绘制自定义样式 QR 码</summary>
+    <pre><code>function drawQRCanvas(text, {size=200, color='#000', bg='#fff', eccLevel='M'} = {}) {
+  const qr = new VanillaQRCode(text, {
+    width: size,
+    height: size,
+    colorDark: color,
+    colorLight: bg,
+    correctLevel: VanillaQRCode.CorrectLevel[eccLevel]
+  });
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  // 读取 SVG 并绘制（这里简化为直接使用图像）
+  const img = new Image();
+  img.onload = () => ctx.drawImage(img, 0, 0, size, size);
+  img.src = 'data:image/svg+xml;base64,' + btoa(qr.getSVG());
+  document.body.appendChild(canvas);
+}
+
+// 示例：绘制带圆角的 QR 码（需后期处理，此处仅展示基本绘制）
+drawQRCanvas('Hello World', {size:180, color:'#1e293b', bg:'#f0f4ff'});
+</code></pre>
+    <button class="btn" onclick="navigator.clipboard.writeText(document.querySelector('details:nth-of-type(2) pre code').textContent)">复制代码</button>
+  </details>
+</section>
+
+<section class="card">
+  <h3>常见问题 FAQ（手风琴式）</h3>
+
+  <details>
+    <summary>生成的 QR 码为什么有时候扫不出来？</summary>
+    <p>可能原因包括：</p>
+    <ul>
+      <li>容错率设置过低，导致轻微污损无法恢复。</li>
+      <li>颜色对比度不足（前景色与背景色相近）。</li>
+      <li>尺寸过小，扫描设备无法辨识细小模块。</li>
+    </ul>
+    <p>建议：使用中等或高容错率（Q/H），确保前景色深色、背景色浅色，且打印或显示尺寸不小于 2×2 cm。</p>
+  </details>
+
+  <details>
+    <summary>能否在 QR 码中间嵌入 Logo？</summary>
+    <p>可以。做法是在生成的矩阵中间留出空白区域（通常占总尺寸的 15%-20%），随后将 Logo 图像放置于该区域。注意：</p>
+    <ul>
+      <li>Logo 不得覆盖定位图案（三个大方块）。</li>
+      <li>保持足够的容错率（建议 H 级）以抵抗 Logo 造成的遮挡。</li>
+    </ul>
+    <p>本站的「样式定制」页提供了 Logo 嵌入功能，可直接上传并实时预览。</p>
+  </details>
+
+  <details>
+    <summary>如何批量生成多个不同内容的 QR 码？</summary>
+    <p>前往 <a href="batch.html">批量生成</a> 页面，支持：</p>
+    <ul>
+      <li>粘贴多行文本，每行生成一个码一个。</li>
+      <li>上传 CSV（第一列为内容，可选第二列为文件名前缀）。</li>
+      <li>自定义命名规则（如 <code>prefix_序号_suffix</code>）。</li>
+    </ul>
+    <p>生成后可一次性下载全部 PNG 或打包为 ZIP。</p>
+  </details>
+
+  <details>
+    <summary>生成的记录会保存在哪里？</summary>
+    <p>所有生成记录默认保存到浏览器的 <code>localStorage</code>，可在 <a href="history.html">历史记录</a> 页面查看、搜索、导出为 CSV。若需跨设备同步，可使用「设置」页的云同步按钮（示例使用 WebDAV 或自建端点）。</p>
+  </details>
+</section>
+
+</main>
+<footer data-a2a="footer" style="margin-top:48px;padding:28px 16px;border-top:1px solid rgba(127,127,127,.16);text-align:center;font-family:system-ui,-apple-system,'PingFang SC',sans-serif;line-height:1.9;color:#8a8f99;background:transparent"><a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:10px"><img src="https://agent.oagi.com.cn/uploads/202606/29ea3ed5413830b3.png" alt="AutoA2A" style="height:36px;vertical-align:middle;border:0"></a><div style="font-size:13.5px;color:#6b7280;max-width:760px;margin:0 auto 6px">✅️ <b>AutoA2A</b> · 智能体互连 Agent to Agent 平台——让智能体无缝发现、协商、协作与安全交换数据，开启 AI 即服务新时代。</div><div style="font-size:13px">本网站由 <a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="color:#f2603c;text-decoration:none;font-weight:600">www.autoa2a.org</a> 多个 AI 协作生成</div><div style="font-size:12px;color:#aab;margin-top:6px">Copyright © 2025 - 2026 AutoA2A. All Rights Reserved. A2A版权所有</div></footer></body>
+</html>
