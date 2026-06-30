@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>设置 - 码上生成</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+--bg-light:#f8fafc;
+--fg-light:#1e293b;
+--primary-light:#2563eb;
+--bg-dark:#1e293b;
+--fg-dark:#f8fafc;
+--primary-dark:#60a5fa;
+--radius-card:8px;
+--radius-btn:6px;
+--spacing:16px;
+--margin:24px;
+font-family:Inter, system-ui, sans-serif;
+}
+body{
+margin:0;
+background:var(--bg-light);
+color:var(--fg-light);
+transition:background .3s, color .3s;
+}
+@media (prefers-color-scheme: dark){
+body{
+background:var(--bg-dark);
+color:var(--fg-dark);
+}
+}
+header{
+background:var(--primary-light);
+color:#fff;
+padding:var(--spacing);
+}
+@media (prefers-color-scheme: dark){
+header{
+background:var(--primary-dark);
+}
+}
+nav{
+display:flex;
+flex-wrap:wrap;
+gap:var(--spacing);
+}
+nav a{
+color:#fff;
+text-decoration:none;
+font-weight:600;
+padding:var(--spacing) 0;
+}
+nav a:hover{
+opacity:0.8;
+}
+main{
+padding:var(--margin);
+max-width:960px;
+margin:0 auto;
+}
+.card{
+background:var(--bg-light);
+color:var(--fg-light);
+border-radius:var(--radius-card);
+padding:var(--spacing);
+margin-bottom:var(--margin);
+box-shadow:0 2px 4px rgba(0,0,0,.05);
+}
+@media (prefers-color-scheme: dark){
+.card{
+background:var(--bg-dark);
+color:var(--fg-dark);
+}
+}
+button{
+background:var(--primary-light);
+color:#fff;
+border:none;
+border-radius:var(--radius-btn);
+padding:var(--spacing);
+font-weight:600;
+cursor:pointer;
+}
+button:hover{
+opacity:0.9;
+}
+@media (prefers-color-scheme: dark){
+button{
+background:var(--primary-dark);
+}
+}
+</style>
+<meta name="description" content="全局默认设置页，持久化默认尺寸、颜色方案、容错率、是否自动保存历史、主题偏好；新增“一键清除本地数据”和“导出/导入设置”功能，所有表单控件均使用统一的表单组件，采用CDN懒加载。"><meta name="keywords" content="QR码生成, 在线工具, 批量生成, 历史记录, 主题切换"><meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:type" content="website"><meta property="og:title" content="设置 - 码上生成"><meta property="og:description" content="全局默认设置页，持久化默认尺寸、颜色方案、容错率、是否自动保存历史、主题偏好；新增“一键清除本地数据”和“导出/导入设置”功能，所有表单控件均使用统一的表单组件，采用CDN懒加载。"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="设置 - 码上生成"><meta name="twitter:description" content="全局默认设置页，持久化默认尺寸、颜色方案、容错率、是否自动保存历史、主题偏好；新增“一键清除本地数据”和“导出/导入设置”功能，所有表单控件均使用统一的表单组件，采用CDN懒加载。"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"设置 - 码上生成","description":"全局默认设置页，持久化默认尺寸、颜色方案、容错率、是否自动保存历史、主题偏好；新增“一键清除本地数据”和“导出/导入设置”功能，所有表单控件均使用统一的表单组件，采用CDN懒加载。","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"}}</script><style data-a2a="basecss">*,*::before,*::after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0}img,canvas,svg,video,table{max-width:100%;height:auto}pre,code{white-space:pre-wrap;word-break:break-word}[data-a2a="header"]{width:100%}@media(max-width:640px){body{font-size:15px}}</style></head>
+<body>
+<header>
+<nav>
+<a href="index.html">首页</a>
+<a href="batch.html">批量生成</a>
+<a href="history.html">历史记录</a>
+<a href="guide.html">使用指南</a>
+<a href="settings.html">设置</a>
+<a href="style.html">样式定制</a>
+<a href="share.html">分享码</a>
+<a href="api.html">API文档</a>
+</nav>
+</header>
+<main>
+
+<article class="card">
+  <h3>全局默认设置</h3>
+  <form id="settings-form">
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--spacing-sm);margin-bottom:var(--spacing-sm);">
+      <div>
+        <label for="default-size" class="block mb-1">默认尺寸 (px)</label>
+        <input type="number" id="default-size" name="size" min="64" max="1024" step="1" class="w-full p-2 border rounded" required>
+      </div>
+      <div>
+        <label for="default-color" class="block mb-1">前景颜色</label>
+        <input type="color" id="default-color" name="color" class="w-full h-10 p-0 border rounded">
+      </div>
+      <div>
+        <label for="default-bgcolor" class="block mb-1">背景颜色</label>
+        <input type="color" id="default-bgcolor" name="bgColor" class="w-full h-10 p-0 border rounded">
+      </div>
+      <div>
+        <label for="default-ecl" class="block mb-1">容错率</label>
+        <select id="default-ecl" name="ecl" class="w-full p-2 border rounded">
+          <option value="L">L (7%)</option>
+          <option value="M">M (15%)</option>
+          <option value="Q">Q (25%)</option>
+          <option value="H">H (30%)</option>
+        </select>
+      </div>
+      <div>
+        <label class="inline-flex items-center mt-2">
+          <input type="checkbox" id="auto-save-history" name="autoSave" class="mr-2">
+          自动保存历史
+        </label>
+      </div>
+      <div>
+        <label for="theme-preference" class="block mb-1">主题偏好</label>
+        <select id="theme-preference" name="theme" class="w-full p-2 border rounded">
+          <option value="system">跟随系统</option>
+          <option value="light">浅色</option>
+          <option value="dark">深色</option>
+        </select>
+      </div>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <button type="submit" class="btn btn-primary">保存设置</button>
+      <button type="button" id="reset-defaults" class="btn btn-outline">恢复默认</button>
+      <button type="button" id="clear-data" class="btn btn-outline">一键清除本地数据</button>
+      <button type="button" id="export-settings" class="btn btn-outline">导出设置</button>
+      <label class="btn btn-outline btn-file">
+        导入设置
+        <input type="file" id="import-file" accept=".json" style="display:none">
+      </label>
+    </div>
+  </form>
+</article>
+
+<script>
+(() => {
+  const defaults = {
+    size: 256,
+    color: "#000000",
+    bgColor: "#ffffff",
+    ecl: "M",
+    autoSave: true,
+    theme: "system"
+  };
+
+  const form = document.getElementById('settings-form');
+  const importInput = document.getElementById('import-file');
+
+  function loadSettings() {
+    const saved = JSON.parse(localStorage.getItem('qrSettings')||'{}');
+    const settings = {...defaults, ...saved};
+    form.size.value = settings.size;
+    form.color.value = settings.color;
+    form.bgColor.value = settings.bgColor;
+    form.ecl.value = settings.ecl;
+    form.autoSave.checked = settings.autoSave;
+    form.theme.value = settings.theme;
+  }
+
+  function saveSettings() {
+    const settings = {
+      size: parseInt(form.size.value,10),
+      color: form.color.value,
+      bgColor: form.bgColor.value,
+      ecl: form.ecl.value,
+      autoSave: form.autoSave.checked,
+      theme: form.theme.value
+    };
+    localStorage.setItem('qrSettings', JSON.stringify(settings));
+    alert('设置已保存');
+  }
+
+  function resetDefaults() {
+    if(confirm('确定要恢复为默认设置吗？')) {
+      localStorage.removeItem('qrSettings');
+      loadSettings();
+    }
+  }
+
+  function clearData() {
+    if(confirm('此操作将清除所有本地数据（历史记录、设置等），不可恢复，继续吗？')) {
+      localStorage.clear();
+      loadSettings();
+      alert('本地数据已清除');
+    }
+  }
+
+  function exportSettings() {
+    const data = localStorage.getItem('qrSettings')||JSON.stringify(defaults);
+    const blob = new Blob([data], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'qr-settings.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function importSettings(file) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const obj = JSON.parse(e.target.result);
+        localStorage.setItem('qrSettings', JSON.stringify(obj));
+        loadSettings();
+        alert('设置已导入');
+      } catch(err) {
+        alert('导入失败：文件格式不正确');
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  form.addEventListener('submit', e=>{e.preventDefault();saveSettings();});
+  document.getElementById('reset-defaults').addEventListener('click', resetDefaults);
+  document.getElementById('clear-data').addEventListener('click', clearData);
+  document.getElementById('export-settings').addEventListener('click', exportSettings);
+  importInput.addEventListener('change', e=>{
+    if(e.target.files.length) importSettings(e.target.files[0]);
+    e.target.value = '';
+  });
+
+  // 初始化
+  loadSettings();
+})();
+</script>
+
+</main>
+<footer data-a2a="footer" style="margin-top:48px;padding:28px 16px;border-top:1px solid rgba(127,127,127,.16);text-align:center;font-family:system-ui,-apple-system,'PingFang SC',sans-serif;line-height:1.9;color:#8a8f99;background:transparent"><a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:10px"><img src="https://agent.oagi.com.cn/uploads/202606/29ea3ed5413830b3.png" alt="AutoA2A" style="height:36px;vertical-align:middle;border:0"></a><div style="font-size:13.5px;color:#6b7280;max-width:760px;margin:0 auto 6px">✅️ <b>AutoA2A</b> · 智能体互连 Agent to Agent 平台——让智能体无缝发现、协商、协作与安全交换数据，开启 AI 即服务新时代。</div><div style="font-size:13px">本网站由 <a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="color:#f2603c;text-decoration:none;font-weight:600">www.autoa2a.org</a> 多个 AI 协作生成</div><div style="font-size:12px;color:#aab;margin-top:6px">Copyright © 2025 - 2026 AutoA2A. All Rights Reserved. A2A版权所有</div></footer></body>
+</html>
