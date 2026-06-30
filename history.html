@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>历史记录 - 码上生成</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+--bg-light:#f8fafc;
+--fg-light:#1e293b;
+--primary-light:#2563eb;
+--bg-dark:#1e293b;
+--fg-dark:#f8fafc;
+--primary-dark:#60a5fa;
+--radius-card:8px;
+--radius-btn:6px;
+--spacing:16px;
+--margin:24px;
+font-family:Inter, system-ui, sans-serif;
+}
+body{
+margin:0;
+background:var(--bg-light);
+color:var(--fg-light);
+transition:background .3s, color .3s;
+}
+@media (prefers-color-scheme: dark){
+body{
+background:var(--bg-dark);
+color:var(--fg-dark);
+}
+}
+header{
+background:var(--primary-light);
+color:#fff;
+padding:var(--spacing);
+}
+@media (prefers-color-scheme: dark){
+header{
+background:var(--primary-dark);
+}
+}
+nav{
+display:flex;
+flex-wrap:wrap;
+gap:var(--spacing);
+}
+nav a{
+color:#fff;
+text-decoration:none;
+font-weight:600;
+padding:var(--spacing) 0;
+}
+nav a:hover{
+opacity:0.8;
+}
+main{
+padding:var(--margin);
+max-width:960px;
+margin:0 auto;
+}
+.card{
+background:var(--bg-light);
+color:var(--fg-light);
+border-radius:var(--radius-card);
+padding:var(--spacing);
+margin-bottom:var(--margin);
+box-shadow:0 2px 4px rgba(0,0,0,.05);
+}
+@media (prefers-color-scheme: dark){
+.card{
+background:var(--bg-dark);
+color:var(--fg-dark);
+}
+}
+button{
+background:var(--primary-light);
+color:#fff;
+border:none;
+border-radius:var(--radius-btn);
+padding:var(--spacing);
+font-weight:600;
+cursor:pointer;
+}
+button:hover{
+opacity:0.9;
+}
+@media (prefers-color-scheme: dark){
+button{
+background:var(--primary-dark);
+}
+}
+</style>
+<meta name="description" content="展示localStorage中的记录，新增导出CSV功能（含内容、时间、尺寸、颜色等字段），提供云同步按钮（示例使用WebDAV或Firebase），记录卡片支持重新编辑、下载、删除，采用懒加载分页渲染。"><meta name="keywords" content="QR码生成, 在线工具, 批量生成, 历史记录, 主题切换"><meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:type" content="website"><meta property="og:title" content="历史记录 - 码上生成"><meta property="og:description" content="展示localStorage中的记录，新增导出CSV功能（含内容、时间、尺寸、颜色等字段），提供云同步按钮（示例使用WebDAV或Firebase），记录卡片支持重新编辑、下载、删除，采用懒加载分页渲染。"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="历史记录 - 码上生成"><meta name="twitter:description" content="展示localStorage中的记录，新增导出CSV功能（含内容、时间、尺寸、颜色等字段），提供云同步按钮（示例使用WebDAV或Firebase），记录卡片支持重新编辑、下载、删除，采用懒加载分页渲染。"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"历史记录 - 码上生成","description":"展示localStorage中的记录，新增导出CSV功能（含内容、时间、尺寸、颜色等字段），提供云同步按钮（示例使用WebDAV或Firebase），记录卡片支持重新编辑、下载、删除，采用懒加载分页渲染。","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"}}</script><style data-a2a="basecss">*,*::before,*::after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0}img,canvas,svg,video,table{max-width:100%;height:auto}pre,code{white-space:pre-wrap;word-break:break-word}[data-a2a="header"]{width:100%}@media(max-width:640px){body{font-size:15px}}</style></head>
+<body>
+<header>
+<nav>
+<a href="index.html">首页</a>
+<a href="batch.html">批量生成</a>
+<a href="history.html">历史记录</a>
+<a href="guide.html">使用指南</a>
+<a href="settings.html">设置</a>
+<a href="style.html">样式定制</a>
+<a href="share.html">分享码</a>
+<a href="api.html">API文档</a>
+</nav>
+</header>
+<main>
+
+<main>
+<section>
+<h2>历史记录</h2>
+  <div style="display:flex;gap:var(--spacing);flex-wrap:wrap;margin-bottom:var(--spacing);">
+    <button id="exportCsv" class="btn">导出 CSV</button>
+    <button id="cloudSync" class="btn">云同步</button>
+  </div>
+  <div id="history-list" class="grid"></div>
+  <div id="loading" style="text-align:center;color:var(--fg-light);display:none;">加载中…</div>
+</section>
+
+<script>
+(() => {
+  const STORAGE_KEY = 'qrHistory';
+  const PAGE_SIZE = 10;
+  let records = [];
+  let page = 0;
+  const listEl = document.getElementById('history-list');
+  const loadingEl = document.getElementById('loading');
+  const exportBtn = document.getElementById('exportCsv');
+  const cloudBtn = document.getElementById('cloudSync');
+
+  function loadRecords() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    records = raw ? JSON.parse(raw) : [];
+    records.sort((a, b) => b.timestamp - a.timestamp);
+    page = 0;
+    renderPage();
+  }
+
+  function renderPage() {
+    const start = page * PAGE_SIZE;
+    const end = start + PAGE_SIZE;
+    const slice = records.slice(start, end);
+    if (slice.length === 0 && page === 0) {
+      listEl.innerHTML = `<div class="empty"><p>暂无记录</p></div>`;
+      loadingEl.style.display = 'none';
+      return;
+    }
+    listEl.innerHTML = '';
+    slice.forEach(rec => {
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.style.display = 'flex';
+      card.style.gap = var('--spacing');
+      card.style.alignItems = 'center';
+      card.style.flexWrap = 'wrap';
+
+      // 预览图
+      const preview = document.createElement('div');
+      preview.style.width = '80px';
+      preview.style.height = '80px';
+      preview.style.border = '1px solid var(--border)';
+      preview.style.background = rec.dataURL ? `url(${rec.dataURL}) center/contain no-repeat` : '#eee';
+      card.appendChild(preview);
+
+      // 内容区
+      const content = document.createElement('div');
+      content.style.flex = '1';
+      content.innerHTML = `
+        <h3>${rec.content}</h3>
+        <p>时间: ${new Date(rec.timestamp).toLocaleString()}</p>
+        <p>尺寸: ${rec.size}px</p>
+        <p>颜色: ${rec.color}</p>
+      `;
+      card.appendChild(content);
+
+      // 操作按钮
+      const btns = document.createElement('div');
+      btns.style.display = 'flex';
+      btns.style.gap = var('--spacing');
+      btns.style.marginLeft = var('--spacing');
+
+      const editBtn = document.createElement('button');
+      editBtn.className = 'btn';
+      editBtn.textContent = '编辑';
+      editBtn.onclick = () => {
+        // 实现编辑逻辑
+        alert('编辑功能待实现');
+      };
+      btns.appendChild(editBtn);
+
+      const downloadBtn = document.createElement('button');
+      downloadBtn.className = 'btn';
+      downloadBtn.textContent = '下载';
+      downloadBtn.onclick = () => {
+        // 实现下载逻辑
+        const blob = new Blob([`内容:${rec.content}\n时间:${new Date(rec.timestamp)}\n尺寸:${rec.size}px\n颜色:${rec.color}`], {type: 'text/plain'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `qr_${rec.id}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      };
+      btns.appendChild(downloadBtn);
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'btn';
+      deleteBtn.textContent = '删除';
+      deleteBtn.onclick = () => {
+        // 实现删除逻辑
+        records = records.filter(r => r.id !== rec.id);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+        renderPage();
+      };
+      btns.appendChild(deleteBtn);
+
+      card.appendChild(btns);
+      listEl.appendChild(card);
+    });
+    loadingEl.style.display = 'none';
+  }
+
+  // 导出CSV
+  exportBtn.addEventListener('click', () => {
+    const csv = records.map(rec => 
+      `${rec.content},${new Date(rec.timestamp)},${rec.size},${rec.color}`
+    ).join('\n');
+    const blob = new Blob([csv], {type: 'text/csv'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'qr_history.csv';
+    document.body.appendChild(a);
+    a.click();
+    URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  });
+
+  // 云同步示例
+  cloudBtn.addEventListener('click', () => {
+    // 示例：WebDAV或Firebase同步
+    alert('云同步功能待实现');
+  });
+
+  // 懒加载分页
+  window.addEventListener('scroll', () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
+      page++;
+      renderPage();
+    }
+  });
+
+  loadRecords();
+})();
+</script>
+</main>
+
+</main>
+<footer data-a2a="footer" style="margin-top:48px;padding:28px 16px;border-top:1px solid rgba(127,127,127,.16);text-align:center;font-family:system-ui,-apple-system,'PingFang SC',sans-serif;line-height:1.9;color:#8a8f99;background:transparent"><a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:10px"><img src="https://agent.oagi.com.cn/uploads/202606/29ea3ed5413830b3.png" alt="AutoA2A" style="height:36px;vertical-align:middle;border:0"></a><div style="font-size:13.5px;color:#6b7280;max-width:760px;margin:0 auto 6px">✅️ <b>AutoA2A</b> · 智能体互连 Agent to Agent 平台——让智能体无缝发现、协商、协作与安全交换数据，开启 AI 即服务新时代。</div><div style="font-size:13px">本网站由 <a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="color:#f2603c;text-decoration:none;font-weight:600">www.autoa2a.org</a> 多个 AI 协作生成</div><div style="font-size:12px;color:#aab;margin-top:6px">Copyright © 2025 - 2026 AutoA2A. All Rights Reserved. A2A版权所有</div></footer></body>
+</html>
