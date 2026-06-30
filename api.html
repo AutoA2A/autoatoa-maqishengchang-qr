@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>API文档 - 码上生成</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+--bg-light:#f8fafc;
+--fg-light:#1e293b;
+--primary-light:#2563eb;
+--bg-dark:#1e293b;
+--fg-dark:#f8fafc;
+--primary-dark:#60a5fa;
+--radius-card:8px;
+--radius-btn:6px;
+--spacing:16px;
+--margin:24px;
+font-family:Inter, system-ui, sans-serif;
+}
+body{
+margin:0;
+background:var(--bg-light);
+color:var(--fg-light);
+transition:background .3s, color .3s;
+}
+@media (prefers-color-scheme: dark){
+body{
+background:var(--bg-dark);
+color:var(--fg-dark);
+}
+}
+header{
+background:var(--primary-light);
+color:#fff;
+padding:var(--spacing);
+}
+@media (prefers-color-scheme: dark){
+header{
+background:var(--primary-dark);
+}
+}
+nav{
+display:flex;
+flex-wrap:wrap;
+gap:var(--spacing);
+}
+nav a{
+color:#fff;
+text-decoration:none;
+font-weight:600;
+padding:var(--spacing) 0;
+}
+nav a:hover{
+opacity:0.8;
+}
+main{
+padding:var(--margin);
+max-width:960px;
+margin:0 auto;
+}
+.card{
+background:var(--bg-light);
+color:var(--fg-light);
+border-radius:var(--radius-card);
+padding:var(--spacing);
+margin-bottom:var(--margin);
+box-shadow:0 2px 4px rgba(0,0,0,.05);
+}
+@media (prefers-color-scheme: dark){
+.card{
+background:var(--bg-dark);
+color:var(--fg-dark);
+}
+}
+button{
+background:var(--primary-light);
+color:#fff;
+border:none;
+border-radius:var(--radius-btn);
+padding:var(--spacing);
+font-weight:600;
+cursor:pointer;
+}
+button:hover{
+opacity:0.9;
+}
+@media (prefers-color-scheme: dark){
+button{
+background:var(--primary-dark);
+}
+}
+</style>
+<meta name="description" content="提供纯前端QR码生成API说明，增加示例代码块（可直接复制）和在线调试器（基于CodePen风格的iframe，懒加载），所有示例均使用CDN引入的库，文档采用主题适配和响应式布局。"><meta name="keywords" content="QR码生成, 在线工具, 批量生成, 历史记录, 主题切换"><meta name="robots" content="index,follow,max-image-preview:large"><meta property="og:type" content="website"><meta property="og:title" content="API文档 - 码上生成"><meta property="og:description" content="提供纯前端QR码生成API说明，增加示例代码块（可直接复制）和在线调试器（基于CodePen风格的iframe，懒加载），所有示例均使用CDN引入的库，文档采用主题适配和响应式布局。"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="API文档 - 码上生成"><meta name="twitter:description" content="提供纯前端QR码生成API说明，增加示例代码块（可直接复制）和在线调试器（基于CodePen风格的iframe，懒加载），所有示例均使用CDN引入的库，文档采用主题适配和响应式布局。"><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"API文档 - 码上生成","description":"提供纯前端QR码生成API说明，增加示例代码块（可直接复制）和在线调试器（基于CodePen风格的iframe，懒加载），所有示例均使用CDN引入的库，文档采用主题适配和响应式布局。","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"CNY"}}</script><style data-a2a="basecss">*,*::before,*::after{box-sizing:border-box}html{-webkit-text-size-adjust:100%}body{margin:0}img,canvas,svg,video,table{max-width:100%;height:auto}pre,code{white-space:pre-wrap;word-break:break-word}[data-a2a="header"]{width:100%}@media(max-width:640px){body{font-size:15px}}</style></head>
+<body>
+<header>
+<nav>
+<a href="index.html">首页</a>
+<a href="batch.html">批量生成</a>
+<a href="history.html">历史记录</a>
+<a href="guide.html">使用指南</a>
+<a href="settings.html">设置</a>
+<a href="style.html">样式定制</a>
+<a href="share.html">分享码</a>
+<a href="api.html">API文档</a>
+</nav>
+</header>
+<main>
+
+<textarea id="code">// 示例：生成 SVG 并显示
+const svg = QRCodeGen.generate("Hello World", {width:200, color:"#000", bgColor:"#fff"});
+const div = document.createElement("div");
+div.innerHTML = svg;
+document.getElementById("preview").innerHTML = "";
+document.getElementById("preview").appendChild(div);
+</textarea>
+<br>
+<button id="run">运行</button>
+<div id="preview"></div>
+<script>
+document.getElementById("run").onclick = () => {
+try {
+const code = document.getElementById("code").value;
+new Function(code)();
+} catch(e) {
+alert("错误: " + e);
+}
+};
+</script>
+
+</main>
+<footer data-a2a="footer" style="margin-top:48px;padding:28px 16px;border-top:1px solid rgba(127,127,127,.16);text-align:center;font-family:system-ui,-apple-system,'PingFang SC',sans-serif;line-height:1.9;color:#8a8f99;background:transparent"><a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="display:inline-block;margin-bottom:10px"><img src="https://agent.oagi.com.cn/uploads/202606/29ea3ed5413830b3.png" alt="AutoA2A" style="height:36px;vertical-align:middle;border:0"></a><div style="font-size:13.5px;color:#6b7280;max-width:760px;margin:0 auto 6px">✅️ <b>AutoA2A</b> · 智能体互连 Agent to Agent 平台——让智能体无缝发现、协商、协作与安全交换数据，开启 AI 即服务新时代。</div><div style="font-size:13px">本网站由 <a href="https://www.autoa2a.org" target="_blank" rel="noopener" style="color:#f2603c;text-decoration:none;font-weight:600">www.autoa2a.org</a> 多个 AI 协作生成</div><div style="font-size:12px;color:#aab;margin-top:6px">Copyright © 2025 - 2026 AutoA2A. All Rights Reserved. A2A版权所有</div></footer></body>
+</html>
